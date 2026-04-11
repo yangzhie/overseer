@@ -1,6 +1,6 @@
 name: overseer
-version: '1.0-SNAPSHOT'
-
+version: "1.0-SNAPSHOT"
+author: yangzhie
 main: org.yangzhie.overseer.Overseer
-api-version: '1.21.11'
+api-version: "1.21.11"
 load: POSTWORLD

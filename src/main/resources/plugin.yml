@@ -1,6 +1,6 @@
 name: overseer
-version: '${version}'
-
+version: "${version}"
+author: yangzhie
 main: org.yangzhie.overseer.Overseer
-api-version: '1.21.11'
+api-version: "1.21.11"
 load: POSTWORLD
