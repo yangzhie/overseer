@@ -6,10 +6,10 @@ import java.util.UUID;
 import org.bukkit.entity.Player;
 
 public class PlayerData {
-  UUID id;
-  String playerName;
-  LocalDateTime time;
-  String eventType; // in/out
+  public UUID id;
+  public String playerName;
+  public LocalDateTime time;
+  public String eventType; // in/out
 
   public PlayerData(Player player, LocalDateTime time, String eventType) {
     this.id = player.getUniqueId();
