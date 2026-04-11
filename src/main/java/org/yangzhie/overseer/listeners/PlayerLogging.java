@@ -1,37 +1,46 @@
 package org.yangzhie.overseer.listeners;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.yangzhie.overseer.data.PlayerData;
 import org.bukkit.entity.Player;
 
 public class PlayerLogging implements Listener {
-  static HashMap<UUID, PlayerData> players = new HashMap<>();
+  static HashMap<UUID, List<PlayerData>> players = new HashMap<>();
 
   /*
     Logs player log in
   */
   @EventHandler
   public void PlayerLogIn(PlayerJoinEvent event) {
-    // Get player of event
+    // Get player + UUID + time
     Player player = event.getPlayer();
-
-    // Get UUID of player
     UUID id = player.getUniqueId();
+    LocalDateTime time = LocalDateTime.now();
 
-    // Get log in time
-    LocalDateTime playerLogInTime;
+    // Instantiate playerdata object
+    PlayerData data = new PlayerData(player, time, "login");
 
-    // Create player data object
-    PlayerData data = new PlayerData(player, playerLogInTime);
+    // Case: no UUID recorded
+    if (!players.containsKey(id)) {
+      players.put(id, new ArrayList<>());
+    }
 
-    // Log info into HashMap
-    players.put(id, data);
+    // Get player's list out of the map via UUID
+    // e.g. history = [LOGIN 9am, LOGOUT 10am]
+    List<PlayerData> history = players.get(id);
+
+    // Add new event to player's list
+    // e.g. history = [LOGIN 9am, LOGOUT 10am, LOGIN 12pm]
+    history.add(data);
   }
 
   /*
@@ -39,19 +48,25 @@ public class PlayerLogging implements Listener {
   */
   @EventHandler
   public void PlayerLogOut(PlayerQuitEvent event) {
-    // Get player
+    // Get player + UUID + time
     Player player = event.getPlayer();
-
-    // Get player UUID
     UUID id = player.getUniqueId();
+    LocalDateTime time = LocalDateTime.now();
 
-    // Get log out time
-    LocalDateTime playerLogOutTime;
+    // Instantiate playerdata object
+    PlayerData data = new PlayerData(player, time, "logout");
 
-    // Create player data object and fill with info
-    PlayerData data = new PlayerData(player, playerLogOutTime);
+    // Case: no UUID recorded
+    if (!players.containsKey(id)) {
+      players.put(id, new ArrayList<>());
+    }
 
-    // Log info into HashMap
-    players.put(id, data);
+    // Get player's list out of the map via UUID
+    // e.g. history = [LOGIN 9am, LOGOUT 10am]
+    List<PlayerData> history = players.get(id);
+
+    // Add new event to player's list
+    // e.g. history = [LOGIN 9am, LOGOUT 10am, LOGIN 12pm]
+    history.add(data);
   }
 }
