@@ -1,4 +1,5 @@
 org/yangzhie/overseer/data/Database.class
+org/yangzhie/overseer/utils/LoggingHelper.class
 org/yangzhie/overseer/listeners/PlayerLogging.class
 org/yangzhie/overseer/data/PlayerData.class
 org/yangzhie/overseer/Overseer.class

@@ -1,6 +1,7 @@
 package org.yangzhie.overseer.utils;
 
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,14 +18,30 @@ public class LoggingHelper {
     // Get time
     LocalDateTime time = LocalDateTime.now();
 
-    // Instantiate playerdata object
-    PlayerData data = new PlayerData(player, time, "login");
+    if(eventType.equals("login")) {
+      // Instantiate playerdata object
+      PlayerData loginData = new PlayerData(player, time, "login");
 
-    // Insert data into database
-    try {
-      Overseer.db.insertLog(data);
-    } catch (SQLException ex) {
-      Bukkit.getLogger().severe("Failed to insert log: " + ex.getMessage());
+      // Insert data into database
+      try {
+        Overseer.db.insertLog(loginData);
+      } catch (SQLException ex) {
+        Bukkit.getLogger().severe("Failed to insert log: " + ex.getMessage());
+      }
+    } else if (eventType.equals("logout")) {
+      // Obtain session + logout data
+      LocalDateTime lastLogin = Overseer.db.getLastLogin(player.getUniqueId());
+      Duration session = Duration.between(lastLogin, time);
+      PlayerData logoutData = new PlayerData(player, time, "logout", session);
+
+      try {
+        // Insert logoutData into DB
+        Overseer.db.insertLog(logoutData);
+      } catch (SQLException ex) {
+        Bukkit.getLogger().severe("Failed to insert log: " + ex.getMessage());
+      }
+
     }
+
   }
 }
