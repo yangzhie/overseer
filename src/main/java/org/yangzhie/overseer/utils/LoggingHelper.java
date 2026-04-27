@@ -3,10 +3,6 @@ package org.yangzhie.overseer.utils;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -32,16 +28,17 @@ public class LoggingHelper {
       // Obtain session + logout data
       LocalDateTime lastLogin = Overseer.db.getLastLogin(player.getUniqueId());
       Duration session = Duration.between(lastLogin, time);
-      PlayerData logoutData = new PlayerData(player, time, "logout", session);
-
+      // Get player LP group
+      LuckpermsHelper lpHelper = new LuckpermsHelper();
+      String playerGroup = lpHelper.getUserPrimaryGroup(player.getUniqueId());
+      
+      PlayerData logoutData = new PlayerData(player, time, "logout", session, playerGroup);
       try {
         // Insert logoutData into DB
         Overseer.db.insertLog(logoutData);
       } catch (SQLException ex) {
         Bukkit.getLogger().severe("Failed to insert log: " + ex.getMessage());
       }
-
     }
-
   }
 }

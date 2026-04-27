@@ -12,6 +12,7 @@ public class PlayerData {
   public String eventType; // in/out/session
   public LocalDateTime time;
   public Duration session;
+  public String playerGroup; // LP group
 
   public PlayerData(Player player, LocalDateTime time, String eventType) {
     this.id = player.getUniqueId();
@@ -19,13 +20,15 @@ public class PlayerData {
     this.time = time;
     this.eventType = eventType;
     this.session = null;
+    this.playerGroup = null;
   }
 
-  public PlayerData(Player player, LocalDateTime time, String eventType, Duration session) {
+  public PlayerData(Player player, LocalDateTime time, String eventType, Duration session, String playerGroup) {
     this.id = player.getUniqueId();
     this.playerName = player.getName();
     this.time = time;
     this.eventType = eventType;
     this.session = session;
+    this.playerGroup = playerGroup;
   }
 }

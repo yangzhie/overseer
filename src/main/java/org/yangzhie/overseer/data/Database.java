@@ -26,7 +26,8 @@ public class Database {
           player_name TEXT,
           event_type TEXT,
           time TEXT,
-          session_seconds INTEGER
+          session_seconds INTEGER,
+          player_group TEXT
         )
         """;
 
@@ -36,7 +37,7 @@ public class Database {
 
   public void insertLog(PlayerData data) throws SQLException {
     String sqlString = """
-        INSERT INTO player_logs (uuid, player_name, event_type, time, session_seconds) VALUES (?, ?, ?, ?, ?)
+        INSERT INTO player_logs (uuid, player_name, event_type, time, session_seconds, player_group) VALUES (?, ?, ?, ?, ?, ?)
         """;
     
     var statement = conn.prepareStatement(sqlString);
@@ -45,6 +46,7 @@ public class Database {
     statement.setString(3, data.eventType);
     statement.setString(4, data.time.toString());
     statement.setLong(5, data.session != null ? data.session.toSeconds() : 0);
+    statement.setString(6, data.playerGroup);
     statement.executeUpdate();
   }
 
